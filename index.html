@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Total Pengeluaran Vape (Liquid + Coil / Catridge)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="js/garuda.js"></script>
+    
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+
+    <nav class="demo">
+        <a href="." class="brand">
+            <img class="logo" src="smok.jpg" />
+            <span>Vape Calculator</span>
+        </a>
+
+        <!-- responsive-->
+        <input id="bmenub" type="checkbox" class="show">
+        <label for="bmenub" class="burger pseudo button">
+            <i class="icon-reorder"></i>
+        </label>
+
+        <div class="menu">
+            <a href="./index.html" class="pseudo button icon-tint">Items</a>
+            <a href="./liquid.html" class="pseudo button icon-tint">Liquid</a>
+            <a href="./coil.html" class="pseudo button icon-tint">Coil/Catridge</a>
+            <a href="https://github.com/lamhotsimamora/hitung-biaya-vape" target="_blank" 
+            class="pseudo button icon-github">Github</a>
+        </div>
+    </nav>
+    <br><br>
+    <hr><br>
+    <div class="container">
+        <article class="card">
+            <header>
+                <center>
+                    <div id="btn">
+                        <button class="icon-plus" @click="openModal">New</button> |
+                        <button class="warning" @click="resetItem">Reset</button> |
+                        <button class="success" @click="print">Print</button>
+
+                    </div>
+                    <hr>
+                    <h3 id="pengeluaran"> Total Pengeluaran : {{ total_pengeluaran }}</h3>
+                </center>
+            </header>
+            <footer>
+                <center>
+                    <table class="error"  id="app">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Tgl Beli</th>
+                                <th>Nama Item</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                                <th>Sub Total</th>
+                                <th>
+                                    @
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data,i) in data_item">
+                                <td>
+                                    {{i=i+1}}
+                                </td>
+                                <td>
+                                    {{ data.item }}
+                                </td>
+                                <td>
+                                    {{data.tanggal}}
+                                </td>
+                                <td>
+                                    {{data.jml}}
+                                </td>
+
+                                <td>
+                                    {{_moneyFormat(data.harga)}}
+                                </td>
+                                <td>
+                                    {{
+                                       _moneyFormat( data.harga*data.jml )
+                                    }}
+                                </td>
+                                <td>
+                                    <button class="error" @click="deleteData(data.item)">
+                                        x
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </center>
+            </footer>
+        </article>
+
+    </div>
+
+    <div class="modal" id="modal_new">
+        <input id="modal_add" type="checkbox" />
+        <label for="modal_add" class="overlay"></label>
+        <article>
+            <header>
+                <h3>New Data</h3>
+                <label for="modal_add" class="close">&times;</label>
+            </header>
+            
+            
+            <section class="content">
+                Pilih Item
+                <select v-model="data_item">
+                    <option v-for="(data,i) in data_liquid_coil">
+                        {{ data }}
+                    </option>
+                </select>
+                <br><br>
+                <fieldset class="flex">
+                    <label><input v-model="harga" ref="harga" @keypress="enterSave" type="text" placeholder="Harga"></label>
+                </fieldset>
+                
+                <fieldset class="flex">
+                    <label><input v-model="jml" ref="jml" @keypress="enterSave" type="text" placeholder="Jumlah"></label>
+                </fieldset>
+
+                <fieldset class="flex">
+                    <label><input v-model="tgl" ref="tgl" @keypress="enterSave" type="date" placeholder=""></label>
+                </fieldset>
+
+            </section>
+            <footer>
+                <a class="button" @click="save">Save</a>
+                <label for="modal_add" class="button dangerous">
+                    x
+                </label>
+            </footer>
+        </article>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
